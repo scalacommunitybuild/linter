@@ -4,7 +4,7 @@ licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/lice
 homepage := Some(url("https://github.com/HairyFotr/linter"))
 //version := "0.1.17"
 
-scalaVersion := "2.10.6"
+scalaVersion := "2.12.12"
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
 libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value
 

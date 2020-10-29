@@ -76,7 +76,7 @@ final class LinterPlugin(val global: Global) extends Plugin {
           //println((sealedTraits, usedTraits))
           for (unusedTrait <- sealedTraits.filterNot(st => usedTraits.exists(_.toString == st._1.toString))) {
             //TODO: It might still be used in some type-signature somewhere... see scalaz
-            warn(unusedTrait._2, UnextendedSealedTrait)(unit)
+            warn(unusedTrait._2, UnextendedSealedTrait)(global)
           }
         }
       }
@@ -84,6 +84,7 @@ final class LinterPlugin(val global: Global) extends Plugin {
 
     class PreTyperTraverser(unit: CompilationUnit) extends Traverser {
       implicit val unitt: CompilationUnit = unit
+      implicit val g: Global = global
 
       var superTraverse = true
       def catcher(): PartialFunction[Throwable, Unit] = {
@@ -241,6 +242,7 @@ final class LinterPlugin(val global: Global) extends Plugin {
 
     class PostTyperTraverser(unit: CompilationUnit) extends Traverser {
       implicit val unitt: CompilationUnit = unit
+      implicit val g: Global = global
       val utils = new Utils[global.type](global)
       import utils._
 
@@ -2048,6 +2050,7 @@ final class LinterPlugin(val global: Global) extends Plugin {
 
     class PostTyperInterpreterTraverser(unit: CompilationUnit) extends Traverser {
       implicit val unitt: CompilationUnit = unit
+      implicit val g: Global = global
       var treePosHolder: Tree = null
       val utils = new Utils[global.type](global)
       import utils._
@@ -4017,6 +4020,7 @@ final class LinterPlugin(val global: Global) extends Plugin {
 
     class PostRefChecksTraverser(unit: CompilationUnit) extends Traverser {
       implicit val unitt: CompilationUnit = unit
+      implicit val g: Global = global
 
       var superTraverse = true
       def catcher(): PartialFunction[Throwable, Unit] = {

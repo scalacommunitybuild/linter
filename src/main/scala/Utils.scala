@@ -24,10 +24,10 @@ final object Utils {
   val nowarnPositions = mutable.HashSet[Global#Position]()
   val nowarnMergeNestedIfsPositions = mutable.HashSet[Global#Position]() //TODO: hack
 
-  def warn(tree: Global#Tree, warning: Warning)(implicit unit: Global#CompilationUnit): Unit = {
-    warn(tree.pos, warning)(unit)
+  def warn(tree: Global#Tree, warning: Warning)(implicit g: Global): Unit = {
+    warn(tree.pos, warning)
   }
-  def warn(tree: Global#Position, warning: Warning)(implicit unit: Global#CompilationUnit): Unit = {
+  def warn(tree: Global#Position, warning: Warning)(implicit g: Global): Unit = {
     val checkSep = "([+:]|[,] )"
     val partSep = "[ :]"
     val checkReg = "[A-Z][a-zA-Z]+"
@@ -38,7 +38,7 @@ final object Utils {
     } else {
       // scalastyle:off regex
       //TODO: after 2.10: CompilationUnit is deprecated, call global.reporter.warning
-      unit.warning(tree.pos, if (linterOptions.printWarningNames) s"[${warning.name}] ${warning.message}" else warning.message)
+      g.reporter.warning(tree.pos, if (linterOptions.printWarningNames) s"[${warning.name}] ${warning.message}" else warning.message)
       // scalastyle:on regex
     }
   }
